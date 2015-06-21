@@ -1,0 +1,328 @@
+arrange(cran2, ip_id)
+arrange(cran2, desc(ip_id))
+arrange(cran2, package, ip_id)
+arrange(cran, country, desc(r_version), ip_id)
+arrange(cran2, country, desc(r_version), ip_id)
+cran3<-select(cran, ip_id,package,size)
+cran3
+mutate(cran3, size_mb = size/2^20)
+mutate(cran3, size_mb = size/2^20, size_gb = size_mb/2^10)
+mutate(cran3, correct_Size = size/1000)
+mutate(cran3, correct_size = size + 1000)
+summarize(cran, avg_bytes = mean(size))
+library(dplyr)
+cran= tbl_df(mydef)
+cran = tbl_df(mydf)
+cran <- tbl_df(mydf)
+rm("mydf")
+cran
+group_by()
+?group_by()
+?group_by
+by_package<-group_by(cran, package)
+by_package
+summarize(by_package, mean(size))
+submit()
+pack_sum <- summarize(by_package,#
+                      count = n(),#
+                      unique = n_distinct(ip_id) ,#
+                      countries = n_distinct(country),#
+                      avg_bytes = mean(size))
+submit()
+pack_sum
+quantile(pack_sum$count, probs = 0.99)
+filter(pack_sum, count > 679)
+top_counts<-filter(pack_sum, count > 679)
+top_counts
+head(top_counts, 20)
+arrange(top_counts, desc(count))
+quantile(pack_sum$unique, probs = 0.99)
+top_unique<-filter(pack_Sum, unique>465)
+top_unique<-filter(pack_sum, unique>465)
+top_unique
+arrange(top_unique, desc(unique))
+print(result1)
+submit()
+library(tidyr)
+students
+?gather
+gather(students, sex, count, -grade)
+students2
+res<-gather(students2, sex_class, count)
+res<-gather(students2, sex_class, count, -grade)
+res
+?separate
+separate(res, sex_class, c("sex","class"))
+submit()
+students3
+submit()
+?spread
+submit()
+?spread
+submit()
+res<-gather(students2, sex_class, count)
+submit()
+spread()
+submit()
+extract_numeric("class5")
+submit()
+students4
+submit()
+passed
+failed
+mutate(passed, status= "passed")
+passed<-mutate(passed, status= "passed")
+failed<-failed%<%mutate(status= "failed")
+failed<-failed%>%mutate(status= "failed")
+rbind_list(passed,failed)
+sat
+submit()
+failed
+?gather
+?separate
+submit()
+?separate
+submit()
+Sys.getlocale("LC_TIME")
+library(lubridate)
+help(package = lubridate)
+today()
+this_day<-today()
+this_day
+year(this_day)
+wday(this_day)
+wday(this_day, label=TRUE)
+this_moment<-now()
+this_moment
+second(this_moment)
+ymd("1989-05-17")
+my_date <- ymd("1989-05-17")
+my_date
+class(my_date)
+ymd("1989 May 17")
+ymd("1416047645433")
+mdy("March 12, 1975")
+dmy("25081985")
+dmy(25081985)
+ymd("192012")
+ymd("1920-1-2")
+dt1
+ymd_hms("2014-08-23 17:23:02")
+ymd_hms(dt1)
+hms("03:22:14")
+dt2
+ymd_ymd_ymd(dt2)
+ymd(dt2)
+update(this_moment, hours = 8, minutes = 34, seconds = 55)
+this_moment
+this_moment<-update(this_moment, hours = 8, minutes = 34, seconds = 55)
+this_moment
+require(plyr)#
+#
+# Directories and files#
+uci_hard_dir <- "UCI\ HAR\ Dataset"#
+feature_file <- paste(uci_hard_dir, "/features.txt", sep = "")#
+activity_labels_file <- paste(uci_hard_dir, "/activity_labels.txt", sep = "")#
+x_train_file <- paste(uci_hard_dir, "/train/X_train.txt", sep = "")#
+y_train_file <- paste(uci_hard_dir, "/train/y_train.txt", sep = "")#
+subject_train_file <- paste(uci_hard_dir, "/train/subject_train.txt", sep = "")#
+x_test_file  <- paste(uci_hard_dir, "/test/X_test.txt", sep = "")#
+y_test_file  <- paste(uci_hard_dir, "/test/y_test.txt", sep = "")#
+subject_test_file <- paste(uci_hard_dir, "/test/subject_test.txt", sep = "")#
+#
+# Load raw data#
+features <- read.table(feature_file, colClasses = c("character"))#
+activity_labels <- read.table(activity_labels_file, col.names = c("ActivityId", "Activity"))#
+x_train <- read.table(x_train_file)#
+y_train <- read.table(y_train_file)#
+subject_train <- read.table(subject_train_file)#
+x_test <- read.table(x_test_file)#
+y_test <- read.table(y_test_file)#
+subject_test <- read.table(subject_test_file)#
+#
+###################################################################
+# 1. Merges the training and the test sets to create one data set.#
+###################################################################
+#
+# Binding sensor data#
+training_sensor_data <- cbind(cbind(x_train, subject_train), y_train)#
+test_sensor_data <- cbind(cbind(x_test, subject_test), y_test)#
+sensor_data <- rbind(training_sensor_data, test_sensor_data)#
+#
+# Label columns#
+sensor_labels <- rbind(rbind(features, c(562, "Subject")), c(563, "ActivityId"))[,2]#
+names(sensor_data) <- sensor_labels#
+#
+#############################################################################################
+# 2. Extracts only the measurements on the mean and standard deviation for each measurement.#
+#############################################################################################
+#
+sensor_data_mean_std <- sensor_data[,grepl("mean|std|Subject|ActivityId", names(sensor_data))]#
+#
+############################################################################
+# 3. Uses descriptive activity names to name the activities in the data set#
+############################################################################
+#
+sensor_data_mean_std <- join(sensor_data_mean_std, activity_labels, by = "ActivityId", match = "first")#
+sensor_data_mean_std <- sensor_data_mean_std[,-1]#
+#
+###############################################################
+# 4. Appropriately labels the data set with descriptive names.#
+###############################################################
+#
+# Remove parentheses#
+names(sensor_data_mean_std) <- gsub('\\(|\\)',"",names(sensor_data_mean_std), perl = TRUE)#
+# Make syntactically valid names#
+names(sensor_data_mean_std) <- make.names(names(sensor_data_mean_std))#
+# Make clearer names#
+names(sensor_data_mean_std) <- gsub('Acc',"Acceleration",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('GyroJerk',"AngularAcceleration",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('Gyro',"AngularSpeed",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('Mag',"Magnitude",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('^t',"TimeDomain.",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('^f',"FrequencyDomain.",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('\\.mean',".Mean",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('\\.std',".StandardDeviation",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('Freq\\.',"Frequency.",names(sensor_data_mean_std))#
+names(sensor_data_mean_std) <- gsub('Freq$',"Frequency",names(sensor_data_mean_std))#
+#
+#######################################################################################################################
+# 5. Creates a second, independent tidy data set with the average of each variable for each activity and each subject.#
+#######################################################################################################################
+#
+sensor_avg_by_act_sub = ddply(sensor_data_mean_std, c("Subject","Activity"), numcolwise(mean))#
+write.table(sensor_avg_by_act_sub, file = "sensor_avg_by_act_sub.txt")
+?rm
+ls
+?rm
+tmp<-1:4
+tmp
+rm(tmp)
+tmp
+getwd()
+library(datasets)
+library(lattice)
+x<-rnorm(1,100)
+y<-rnorm(1,200)
+z<-rnorm(1,500)
+df<-data.frame(x,y,z)
+library(dplyr)
+tbl_df(df)
+xyplot(x~y|z, data = df)
+print(xyplot(x~y|z, data = df))
+?set.seed
+set.seed(10)
+?factor
+install.packages("ggplot2")
+?splom
+?par
+?trellis.par.set
+library(datasets)
+data(airquality)
+?geom
+??geom
+library(ggplot2)
+g<-(movies, aes(votes, rating))
+qplot(displ, hwy, data = mpg)
+?rep
+rep(1:3, times = 2, each = 3)
+rep(1:5, times = 5, each 2)
+rep(1:5, times = 5, each = 2)
+rnorm(12, mean = rep(1:3, times = 1, each = 2), sd = 0.5)
+x<-rnorm(12, mean = rep(1:3, times = 1, each = 2), sd = 0.5)
+y<-rnorm(12, mean = rep(1:2, times = 2, each = 1), sd = 0.3)
+plot(x, y, pch = 20, col = "green")
+plot(x, y, pch = 15, col = "blue")
+z<-plot(x, y, pch = 15, col = "blue")
+df<-data.frame(x, y)
+dist(df)
+?hclust
+install.packages(grDevices)
+install.packages("grDevices")
+library(grDevices)
+color()
+install.packages("RColorBrewer")
+library(RColorBrewer)
+getwd()
+setwd(""/Users/swati.kumari/Documents")
+getwd()
+a<-read.csv("../sample1.csv", sep = ",", header = TRUE)
+a<-read.csv("downloads/sample1.csv", sep = ",", header = TRUE)
+a<-read.csv("./sample1.csv", sep = ",", header = TRUE)
+a<-read.csv("downloads/sample1.csv", sep = ",", header = TRUE)
+library(tidyr)
+library(dplyr)
+tbl_df(a)
+select(a,-(wgtp1(int):wgtp80(int)))
+b<-select(a,-wgtp1(int))
+select(a,-(a$wgtp1(int):a$wgtp80(int)))
+b<-select(a,-a$wgtp1(int))
+tbl_df(a)
+b<-select(a,RT)
+b<-select(a, wgtp1)
+b<-select(a, wgtp1(int))
+select(a,-(wgtp1:wgtp80))
+tbl_df(select(a, -(wgtp1:wgtp80))
+a<-url("https://www.facebook.com/")
+b<-readLines(a)
+library(xml)
+install.packages("xml")
+install.packages("XML")
+install.packages("KernSmooth")
+library(KernSmooth)
+install.packages("manipulate")
+library(ggplot2)
+ggplot(galton, aes(y = child, x = parent))+geom_point()
+install.packages("HistData")
+library(HistData)
+load(galton)
+ggplot(galton, aes(y = child, x = parent))+geom_point()
+data(Galton)
+ggplot(Galton, aes(y = child, x = parent))+geom_point()
+getwd()
+setwd("/Users/swati.kumari/Downloads/UCI HAR Dataset")
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+a<-read.table("test/X_test.txt")
+dim(a)
+class(a)
+names(a)
+class(a$V6)
+class(a$V555)
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+warnings()
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+gsub("()", "", h)
+print(source("getting_a1.R"))
+?gsub
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+warnings()
+?mean
+?mean
+warnings()
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
+print(source("getting_a1.R"))
